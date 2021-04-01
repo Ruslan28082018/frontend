@@ -1,0 +1,71 @@
+// ==UserScript==
+// @name         New Userscript
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://yandex.ru/*
+// @grant        none
+// ==/UserScript==
+
+let keyWords;
+let randomIndex;
+
+
+keyWords = ["Как звучит флейта", "Валторна", "Тромбон", "Кларнет", "Фагот", "Гобой", "Саксофон"];
+randomIndex = Math.floor(Math.random() * keyWords.length);
+let keyWord = keyWords[randomIndex];
+let inputYa = document.getElementsByName('text')[0];
+let btnK = document.getElementsByClassName('button')[0]; //
+
+if (btnK != undefined)
+    {
+        let i;
+
+        i = 0;
+        let timerId = setInterval(() =>
+        {
+            inputYa.value += keyWord[i++];
+
+            if(i == keyWord.length)
+            {
+                clearInterval(timerId);
+                btnK.click();
+            }
+        }, 250)
+    }
+else
+    {
+        let i;
+        let lin;
+        let nextLink;
+
+        lin = document.links;
+        console.log(lin.length);
+        i = 0;
+        while(i < lin.length)
+        {
+            //console.log(lin[i].href);
+            console.log(i);
+            lin[i].removeAttribute("target");
+
+            if (lin[i].href.indexOf("xn----7sbab5aqcbiddtdj1e1g.xn--p1ai") != -1)
+            {
+                //console.log(i);
+                lin[i].click();
+                //  console.log(lin[i].href);
+                break;
+            }
+            else
+            {
+                if (lin[i].innerHTML == 'дальше')
+                {
+                    nextLink = lin[i];
+                    //lin[i].click();
+                   // console.log("ссылка дальше");
+                }
+            }
+                i++;
+        }
+        nextLink.click();
+    }
